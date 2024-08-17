@@ -1,42 +1,114 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
+
 public class ScaleController : MonoBehaviour
 {
-    public GameObject targetObject; // El objeto que se va a escalar
-    public GameObject Silueta; // El objeto que se va a escalar
-    public Button growButton; // Botón para crecer el objeto
-    public Button shrinkButton; // Botón para reducir el objeto
-    public float scaleFactor = 0.5f; // Factor de escalado
-    public float maxScale = 1.5f; // Tamaño máximo permitido
-    public float minScale = 0.5f; // Tamaño mínimo permitido
-    public float animationDuration = 0.5f; // Duración de la animación
+    public Sprite[] Siluetas;
+    public TextMeshProUGUI TextTamaño;
+    public GameObject targetObject; 
+    public Button growButton; 
+    public Button shrinkButton; 
+    public float scaleFactor = 0.5f;
+    public float maxScale = 1.5f;
+    public float minScale = 0.5f; 
+    public float animationDuration = 0.5f; 
+    public float punchScale = 0.2f;
+    public float punchDuration = 0.3f; 
+
+    private bool isAnimating = false; 
+    private Vector3 growButtonInitialScale;
+    private Vector3 shrinkButtonInitialScale;
 
     private void Start()
     {
-        growButton.onClick.AddListener(GrowObject);
-        shrinkButton.onClick.AddListener(ShrinkObject);
+        growButton.onClick.AddListener(() => {
+            GrowObject();
+            AnimateButton(growButton.gameObject, growButtonInitialScale);
+        });
+
+        shrinkButton.onClick.AddListener(() => {
+            ShrinkObject();
+            AnimateButton(shrinkButton.gameObject, shrinkButtonInitialScale);
+        });
+
+        growButtonInitialScale = growButton.transform.localScale;
+        shrinkButtonInitialScale = shrinkButton.transform.localScale;
+
+        ActualizarTexto(); 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            ShrinkObject();
+            AnimateButton(shrinkButton.gameObject, shrinkButtonInitialScale);
+        }
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            GrowObject();
+            AnimateButton(growButton.gameObject, growButtonInitialScale);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+
+            //Cambiar Sprite del Game Object
+        }
+    }
+
+    private void ActualizarTexto()
+    {
+        TextTamaño.text = targetObject.transform.localScale.x.ToString("F2") + "X";
     }
 
     private void GrowObject()
     {
+        if (isAnimating) return; 
+        isAnimating = true; 
+
         Vector3 newScale = targetObject.transform.localScale + new Vector3(scaleFactor, scaleFactor, 0);
         if (newScale.x <= maxScale && newScale.y <= maxScale)
         {
-            targetObject.transform.DOScale(newScale, animationDuration);
-            Silueta.transform.DOScale(newScale, animationDuration);
+            targetObject.transform.DOScale(newScale, animationDuration)
+                .OnUpdate(ActualizarTexto)
+                .OnComplete(() => {
+                    isAnimating = false; 
+                    ActualizarTexto();
+                });
+        }
+        else
+        {
+            isAnimating = false; 
         }
     }
 
     private void ShrinkObject()
     {
+        if (isAnimating) return; 
+        isAnimating = true;
+
         Vector3 newScale = targetObject.transform.localScale - new Vector3(scaleFactor, scaleFactor, 0);
         if (newScale.x >= minScale && newScale.y >= minScale)
         {
-            targetObject.transform.DOScale(newScale, animationDuration);
-            Silueta.transform.DOScale(newScale, animationDuration);
+            targetObject.transform.DOScale(newScale, animationDuration)
+                .OnUpdate(ActualizarTexto)
+                .OnComplete(() => {
+                    isAnimating = false; 
+                    ActualizarTexto();
+                });
         }
+        else
+        {
+            isAnimating = false; 
+        }
+    }
+
+    private void AnimateButton(GameObject button, Vector3 initialScale)
+    {
+        button.transform.DOKill(); 
+        button.transform.localScale = initialScale; 
+        button.transform.DOPunchScale(new Vector3(punchScale, punchScale, 0), punchDuration, 10, 1);
     }
 }
