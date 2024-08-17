@@ -5,6 +5,7 @@ using TMPro;
 
 public class ScaleController : MonoBehaviour
 {
+    public Color[] Colores;
     public Sprite[] Siluetas;
     public TextMeshProUGUI TextTamaño;
     public GameObject targetObject; 
@@ -53,8 +54,24 @@ public class ScaleController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-
-            //Cambiar Sprite del Game Object
+            //Circulo
+            var Sprite = targetObject.GetComponent<Image>();
+            Sprite.sprite = Siluetas[0];
+            Sprite.color = Colores[0];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            //Estrella
+            var Sprite = targetObject.GetComponent<Image>();
+            Sprite.sprite = Siluetas[1];
+            Sprite.color = Colores[1];
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            //Cuadrado
+            var Sprite = targetObject.GetComponent<Image>();
+            Sprite.sprite = Siluetas[2];
+            Sprite.color = Colores[2];
         }
     }
 

@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 using UnityEngine.UI;
 
 public class MoveController : MonoBehaviour
 {
+    private int Puntos = 0;
     public GameObject Silueta;
+    public GameObject targetObject;
     public float[] Escalas;
     public Sprite[] Siluetas;
-    public GameObject targetObject;
+    public GameObject Plataforma;
     public Transform position1;
     public Transform position2;
     public Transform position3;
@@ -16,36 +19,101 @@ public class MoveController : MonoBehaviour
     public float animationDurationFinal = 0.5f;
     public float waitTime = 2f;
     public float hideDuration = 0.1f;
+    public TextMeshProUGUI puntosText; // Referencia al TextMeshProUGUI para el puntaje
+    public float punchScale = 0.2f; // Escala del punch
+    public float punchDuration = 0.3f; // Duración del punch
+    public float shakeDuration = 0.5f; // Duración del shake
+    public float shakeStrength = 0.5f; // Fuerza del shake
+
+    public LifeManager lifeManager; // Referencia al LifeManager
+
+    private Color defaultColor; // Color por defecto del texto
+    public Color failColor = Color.red; // Color para el fallo
 
     private void Start()
     {
-        targetObject.transform.position = position1.position;
+        if (puntosText != null)
+        {
+            defaultColor = puntosText.color;
+        }
+        Plataforma.transform.position = position1.position;
 
         Sequence sequence = DOTween.Sequence();
 
-        sequence.Append(targetObject.transform.DOMove(position2.position, animationDuration))
+        sequence.Append(Plataforma.transform.DOMove(position2.position, animationDuration))
                 .AppendInterval(waitTime)
-                .Append(targetObject.transform.DOMove(position3.position, animationDurationFinal)) 
-                .AppendCallback(Asignar) 
+                .AppendCallback(Comprobar)
+                .Append(Plataforma.transform.DOMove(position3.position, animationDurationFinal))
+                .AppendCallback(Asignar)
                 .AppendCallback(() => StartCoroutine(HideAndMoveBack()))
                 .SetLoops(-1, LoopType.Restart);
     }
+
+    public void Comprobar()
+    {
+        var siluetaImage = Silueta.GetComponent<Image>().sprite.name;
+        var targetImage = targetObject.GetComponent<Image>().sprite.name;
+
+        if (siluetaImage == targetImage && Silueta.transform.localScale.x == targetObject.transform.localScale.x)
+        {
+            Puntos++;
+            UpdateScoreText();
+            AnimateScoreTextPunch();
+            Debug.Log(Puntos);
+        }
+        else
+        {
+            AnimateScoreTextShake();
+            lifeManager.LoseLife();
+            Debug.LogWarning("Fallo");
+        }
+    }
+
     private IEnumerator HideAndMoveBack()
     {
-        targetObject.SetActive(false);
+        Plataforma.SetActive(false);
         yield return new WaitForSeconds(hideDuration);
-        targetObject.transform.position = position1.position;
-        targetObject.SetActive(true);
+        Plataforma.transform.position = position1.position;
+        Plataforma.SetActive(true);
     }
+
     public void Asignar()
     {
         float randomNumber = Random.Range(0, Escalas.Length);
-        int randomNumberSprite = Random.Range(0,Siluetas.Length);
+        int randomNumberSprite = Random.Range(0, Siluetas.Length);
         if (Escalas.Length > 0)
         {
             Silueta.transform.localScale = new Vector2(Escalas[Mathf.FloorToInt(randomNumber)], Escalas[Mathf.FloorToInt(randomNumber)]);
             Silueta.GetComponent<Image>().sprite = Siluetas[randomNumberSprite];
         }
+    }
 
+    private void UpdateScoreText()
+    {
+        if (puntosText != null)
+        {
+            puntosText.text = Puntos.ToString();
+        }
+    }
+
+    private void AnimateScoreTextPunch()
+    {
+        if (puntosText != null)
+        {
+            puntosText.transform.DOPunchScale(new Vector3(punchScale, punchScale, 0), punchDuration, 10, 1)
+                .OnKill(() => Debug.Log("Punch animation complete."));
+        }
+    }
+
+    private void AnimateScoreTextShake()
+    {
+        if (puntosText != null)
+        {
+            Sequence sequence = DOTween.Sequence();
+            sequence.Append(puntosText.DOColor(failColor, shakeDuration / 2))
+                    .Append(puntosText.transform.DOShakePosition(shakeDuration, shakeStrength, 10, 90, false, true))
+                    .Append(puntosText.DOColor(defaultColor, shakeDuration / 2))
+                    .OnKill(() => Debug.Log("Shake and color animation complete."));
+        }
     }
 }
