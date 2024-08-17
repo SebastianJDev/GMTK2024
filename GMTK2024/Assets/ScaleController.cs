@@ -55,6 +55,7 @@ public class ScaleController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             //Circulo
+            AudioManager.instance.Play("Scroll");
             var Sprite = targetObject.GetComponent<Image>();
             Sprite.sprite = Siluetas[0];
             Sprite.color = Colores[0];
@@ -62,6 +63,7 @@ public class ScaleController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             //Estrella
+            AudioManager.instance.Play("Scroll");
             var Sprite = targetObject.GetComponent<Image>();
             Sprite.sprite = Siluetas[1];
             Sprite.color = Colores[1];
@@ -69,6 +71,7 @@ public class ScaleController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             //Cuadrado
+            AudioManager.instance.Play("Scroll");
             var Sprite = targetObject.GetComponent<Image>();
             Sprite.sprite = Siluetas[2];
             Sprite.color = Colores[2];
@@ -88,6 +91,7 @@ public class ScaleController : MonoBehaviour
         Vector3 newScale = targetObject.transform.localScale + new Vector3(scaleFactor, scaleFactor, 0);
         if (newScale.x <= maxScale && newScale.y <= maxScale)
         {
+            AudioManager.instance.Play("BlopMas");
             targetObject.transform.DOScale(newScale, animationDuration)
                 .OnUpdate(ActualizarTexto)
                 .OnComplete(() => {
@@ -109,6 +113,7 @@ public class ScaleController : MonoBehaviour
         Vector3 newScale = targetObject.transform.localScale - new Vector3(scaleFactor, scaleFactor, 0);
         if (newScale.x >= minScale && newScale.y >= minScale)
         {
+            AudioManager.instance.Play("BlopMenos");
             targetObject.transform.DOScale(newScale, animationDuration)
                 .OnUpdate(ActualizarTexto)
                 .OnComplete(() => {

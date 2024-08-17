@@ -8,9 +8,11 @@ public class MoveController : MonoBehaviour
 {
     private int Puntos = 0;
     public GameObject Silueta;
+    public GameObject siluetaShadow;
     public GameObject targetObject;
     public float[] Escalas;
     public Sprite[] Siluetas;
+    public Sprite[] SiluetasShadow;
     public GameObject Plataforma;
     public Transform position1;
     public Transform position2;
@@ -20,6 +22,7 @@ public class MoveController : MonoBehaviour
     public float waitTime = 2f;
     public float hideDuration = 0.1f;
     public TextMeshProUGUI puntosText; // Referencia al TextMeshProUGUI para el puntaje
+    public TextMeshProUGUI puntosTextFinal;
     public float punchScale = 0.2f; // Escala del punch
     public float punchDuration = 0.3f; // Duración del punch
     public float shakeDuration = 0.5f; // Duración del shake
@@ -51,7 +54,7 @@ public class MoveController : MonoBehaviour
 
     public void Comprobar()
     {
-        var siluetaImage = Silueta.GetComponent<Image>().sprite.name;
+        var siluetaImage = siluetaShadow.GetComponent<Image>().sprite.name;
         var targetImage = targetObject.GetComponent<Image>().sprite.name;
 
         if (siluetaImage == targetImage && Silueta.transform.localScale.x == targetObject.transform.localScale.x)
@@ -84,7 +87,8 @@ public class MoveController : MonoBehaviour
         if (Escalas.Length > 0)
         {
             Silueta.transform.localScale = new Vector2(Escalas[Mathf.FloorToInt(randomNumber)], Escalas[Mathf.FloorToInt(randomNumber)]);
-            Silueta.GetComponent<Image>().sprite = Siluetas[randomNumberSprite];
+            Silueta.GetComponent<Image>().sprite = SiluetasShadow[randomNumberSprite];
+            siluetaShadow.GetComponent<Image>().sprite = Siluetas[randomNumberSprite];
         }
     }
 
@@ -93,6 +97,7 @@ public class MoveController : MonoBehaviour
         if (puntosText != null)
         {
             puntosText.text = Puntos.ToString();
+            puntosTextFinal.text = "POINTS: " + Puntos.ToString();
         }
     }
 
@@ -100,6 +105,7 @@ public class MoveController : MonoBehaviour
     {
         if (puntosText != null)
         {
+            AudioManager.instance.Play("Correcto");
             puntosText.transform.DOPunchScale(new Vector3(punchScale, punchScale, 0), punchDuration, 10, 1)
                 .OnKill(() => Debug.Log("Punch animation complete."));
         }
