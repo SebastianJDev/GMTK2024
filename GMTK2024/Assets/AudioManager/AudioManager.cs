@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
     public List<Sound> sounds;
+    public string parametro;
 
     void Awake()
     {
@@ -23,6 +23,8 @@ public class AudioManager : MonoBehaviour
             sound.source = gameObject.AddComponent<AudioSource>();
             sound.source.clip = sound.clip;
             sound.source.volume = sound.volume;
+            sound.source.loop = sound.loop;
+            sound.source.pitch = sound.pitch;
         }
     }
     public void AddSound(Sound sound)
@@ -74,5 +76,11 @@ public class AudioManager : MonoBehaviour
     public void RemoveSound(Sound sound)
     {
         sounds.Remove(sound);
+    }
+
+    [ContextMenu("ButtonPlay")]
+    public void ButtonPlay()
+    {
+        Play(parametro);
     }
 }

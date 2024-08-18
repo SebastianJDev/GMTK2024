@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class MoveController : MonoBehaviour
 {
+    public LeaderBoardManager leaderboardManager;
+    public float TimeActual;
     private int Puntos = 0;
     public GameObject Silueta;
     public GameObject siluetaShadow;
@@ -35,6 +37,7 @@ public class MoveController : MonoBehaviour
 
     private void Start()
     {
+        TimeActual = Time.timeScale;
         if (puntosText != null)
         {
             defaultColor = puntosText.color;
@@ -62,13 +65,17 @@ public class MoveController : MonoBehaviour
             Puntos++;
             UpdateScoreText();
             AnimateScoreTextPunch();
-            Debug.Log(Puntos);
+            if (Time.timeScale <= 2.2f)
+            {
+                TimeActual += 0.03f;
+                Time.timeScale = TimeActual;
+            }
+            leaderboardManager.SendScoreToLeaderboard(Puntos);
         }
         else
         {
             AnimateScoreTextShake();
             lifeManager.LoseLife();
-            Debug.LogWarning("Fallo");
         }
     }
 

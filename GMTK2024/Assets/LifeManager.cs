@@ -63,12 +63,10 @@ public class LifeManager : MonoBehaviour
     private void RestartLevel()
     {
         PanelLose.SetActive(true);
-        BarraNegra1.transform.position = new Vector3(-480f, 100f,0f);
-        BarraNegra2.transform.position = new Vector3(-480f, -100f,0f);
+        
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(BarraNegra1.transform.DOMove(posicionFinal1.position, 1.0f))
-            .Append(BarraNegra2.transform.DOMove(posicionFinal2.position, 1.0f)).AppendCallback(TimeScale);
-        Debug.LogError("Se termino el juego");
+        sequence.Append(BarraNegra1.transform.DOMove(posicionFinal1.position, 1.0f)).Join(BarraNegra2.transform.DOMove(posicionFinal2.position, 1.0f))
+            .AppendCallback(TimeScale);
     }
     public void TimeScale()
     {
