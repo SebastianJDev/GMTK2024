@@ -17,6 +17,7 @@ public class LifeManager : MonoBehaviour
     public Transform posicionFinal2;
     [SerializeField]private Color fall;
     [SerializeField] private Button RetryButton;
+    [SerializeField] private Button MenuButton;
     public float duration = 1f; // Duración de la animación
     public Vector3 targetScale = Vector3.one; // Escala final de la imagen
     private void Start()
@@ -25,6 +26,10 @@ public class LifeManager : MonoBehaviour
         {
             Time.timeScale = 1;
             UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        });
+        MenuButton.onClick.AddListener(() => {
+            Time.timeScale = 1;
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
         });
         PanelLose.SetActive(false);
         // Inicializar las imágenes de las vidas a su color original

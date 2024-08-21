@@ -75,6 +75,13 @@ public class ScaleController : MonoBehaviour
             var Sprite = targetObject.GetComponent<Image>();
             Sprite.sprite = Siluetas[2];
             Sprite.color = Colores[2];
+        }else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            //Triangulo
+            AudioManager.instance.Play("Scroll");
+            var Sprite = targetObject.GetComponent<Image>();
+            Sprite.sprite = Siluetas[3];
+            Sprite.color = Colores[3];
         }
     }
 

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class LeaderBoardManager : MonoBehaviour
 {
+    [SerializeField] private string NameLeaderBoard;
     public void SendScoreToLeaderboard(int score)
     {
         var request = new UpdatePlayerStatisticsRequest
@@ -14,7 +15,7 @@ public class LeaderBoardManager : MonoBehaviour
             {
                 new StatisticUpdate
                 {
-                    StatisticName = "HighScore", // Nombre del estadístico en la tabla de clasificación
+                    StatisticName = NameLeaderBoard, // Nombre del estadístico en la tabla de clasificación
                     Value = score
                 }
             }

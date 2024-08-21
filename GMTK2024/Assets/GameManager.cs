@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public GameObject pauseMenuUI;
     public bool isPaused = false;
     public MoveController moveController;
+    public LeaderBoardDisplay leaderboarddisplay;
     private void Start()
     {
         AudioManager.instance.Play("Music");
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Detectar si se presiona la tecla Escape
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             if (isPaused)
             {
@@ -38,6 +39,7 @@ public class GameManager : MonoBehaviour
 
     void Pause()
     {
+        leaderboarddisplay.FetchAndDisplayLeaderboard();
         pauseMenuUI.SetActive(true); // Mostrar el menú de pausa
         Time.timeScale = 0f; // Pausar el juego
         isPaused = true;

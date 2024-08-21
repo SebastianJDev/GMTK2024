@@ -70,13 +70,13 @@ public class MoveController : MonoBehaviour
                 TimeActual += 0.03f;
                 Time.timeScale = TimeActual;
             }
-            leaderboardManager.SendScoreToLeaderboard(Puntos);
         }
         else
         {
             AnimateScoreTextShake();
             lifeManager.LoseLife();
         }
+        leaderboardManager.SendScoreToLeaderboard(Puntos);
     }
 
     private IEnumerator HideAndMoveBack()

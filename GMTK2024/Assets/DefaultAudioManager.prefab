@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3434573786222716167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3599881692846389534}
+  - component: {fileID: 6929618161505351263}
+  m_Layer: 0
+  m_Name: DefaultAudioManager
+  m_TagString: AudioManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3599881692846389534
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3434573786222716167}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6929618161505351263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3434573786222716167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9ebacc3b24d3a4baf2d80ae78a783a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Scroll
+    clip: {fileID: 8300000, guid: 5dacd15c71b4b2c44b2f69f2977ef189, type: 3}
+    loop: 0
+    pitch: 1.4
+    volume: 0.9
+    type: 1
+    source: {fileID: 0}
+  - name: BlopMas
+    clip: {fileID: 8300000, guid: 5dacd15c71b4b2c44b2f69f2977ef189, type: 3}
+    loop: 0
+    pitch: 1
+    volume: 0.7
+    type: 1
+    source: {fileID: 0}
+  - name: BlopMenos
+    clip: {fileID: 8300000, guid: 7d51b18379020b64fbe6162d77e15cb1, type: 3}
+    loop: 0
+    pitch: 1
+    volume: 0.7
+    type: 1
+    source: {fileID: 0}
+  - name: Correcto
+    clip: {fileID: 8300000, guid: bd4bba175b105d445a6b80834ed88613, type: 3}
+    loop: 0
+    pitch: 1
+    volume: 0.4
+    type: 1
+    source: {fileID: 0}
+  - name: Fallo
+    clip: {fileID: 8300000, guid: cac91cb05a3e990449860aa6c92f1c93, type: 3}
+    loop: 0
+    pitch: 1
+    volume: 0.9
+    type: 1
+    source: {fileID: 0}
+  - name: FalloUltimo
+    clip: {fileID: 8300000, guid: 491855f4c1f2ada479ec647b15969852, type: 3}
+    loop: 0
+    pitch: 1
+    volume: 0.4
+    type: 1
+    source: {fileID: 0}
+  - name: Music
+    clip: {fileID: 8300000, guid: 0a174feee659e8246b081ad177af74d4, type: 3}
+    loop: 1
+    pitch: 1
+    volume: 0.05
+    type: 0
+    source: {fileID: 0}
+  parametro: Scroll

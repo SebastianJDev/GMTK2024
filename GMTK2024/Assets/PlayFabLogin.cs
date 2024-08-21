@@ -10,6 +10,7 @@ public class PlayFabLogin : MonoBehaviour
     private (string name, string id) UserInfo;
     [SerializeField] private TMP_InputField InputName;
     [SerializeField] private UnityEvent OnRegisterNewUser;
+    [SerializeField] private UnityEvent OnLogin;
 
     private void Awake()
     {
@@ -40,11 +41,14 @@ public class PlayFabLogin : MonoBehaviour
 
     public void GuardarNombreUsuario()
     {
-        UserInfo.name = InputName.text;
-        PlayerPrefs.SetString("UserName", UserInfo.name);
-        UserInfo.id = GenerateCustomId(); // Genera un ID único adecuado
-        PlayerPrefs.SetString("id", UserInfo.id);
-        RegisterNewUser();
+        if (InputName.text != null && InputName.text.Length >= 5)
+        {
+            UserInfo.name = InputName.text;
+            PlayerPrefs.SetString("UserName", UserInfo.name);
+            UserInfo.id = GenerateCustomId(); // Genera un ID único adecuado
+            PlayerPrefs.SetString("id", UserInfo.id);
+            RegisterNewUser();
+        }
     }
 
     private void RegisterOrLoginUser()
@@ -123,7 +127,7 @@ public class PlayFabLogin : MonoBehaviour
     {
         Debug.Log("Registro exitoso: " + result.PlayFabId);
         UpdateDisplayName(); // Actualiza el nombre de usuario después del registro
-        SceneManager.LoadScene(1);
+        OnLogin.Invoke();
     }
 
     private void UpdateDisplayName()
@@ -164,7 +168,12 @@ public class PlayFabLogin : MonoBehaviour
     private void OnUserExists(GetUserDataResult result)
     {
         Debug.Log("Usuario existe en PlayFab con ID: " + UserInfo.id);
-        SceneManager.LoadScene(1);
+        OnLogin.Invoke();
+    }
+    public void SelectMode(int mode)
+    {
+
+        SceneManager.LoadScene(mode);
     }
 
     private string GenerateCustomId()

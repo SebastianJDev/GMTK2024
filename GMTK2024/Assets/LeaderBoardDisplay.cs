@@ -9,12 +9,13 @@ public class LeaderBoardDisplay : MonoBehaviour
 {
     [SerializeField] private GameObject leaderboardEntryPrefab; // Prefab para una entrada de la tabla de clasificación
     [SerializeField] private Transform leaderboardParent; // Donde se instancian las entradas del leaderboard
+    [SerializeField] private string leaderboardName;
 
     public void FetchAndDisplayLeaderboard()
     {
         var request = new GetLeaderboardRequest
         {
-            StatisticName = "HighScore", // Nombre del estadístico en la tabla de clasificación
+            StatisticName = leaderboardName, // Nombre del estadístico en la tabla de clasificación
             StartPosition = 0,
             MaxResultsCount = 10
         };
